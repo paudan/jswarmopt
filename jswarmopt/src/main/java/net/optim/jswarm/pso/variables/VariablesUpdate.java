@@ -4,7 +4,7 @@ import net.optim.jswarm.pso.Swarm;
 
 /**
  * Swarm variables update
- * Every Swarm.evolve() iteration, update() is called 
+ * Every {@link Swarm#evolve()} iteration, update() is called 
  * 
  * @author Pablo Cingolani <pcingola@users.sourceforge.net>
  */

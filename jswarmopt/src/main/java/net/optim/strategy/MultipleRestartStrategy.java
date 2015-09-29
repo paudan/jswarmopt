@@ -8,7 +8,7 @@ import net.optim.jswarm.Particle;
 import net.optim.jswarm.pso.Swarm;
 
 /**
- * Simple "multiple swarms" training strategy. A total of n swarms are trained using a fixed number of iterations, and best global result is returned 
+ * Simple "multiple swarms" training strategy. {@code n} swarms are trained using a fixed number of iterations, and best global result is returned 
  * @author Paulius Danėnas <danpaulius@gmail.com>
  */
 public class MultipleRestartStrategy extends OptimizationStrategy {

@@ -7,9 +7,8 @@ import net.optim.jswarm.pso.constraints.ConstraintsHandler;
 import net.optim.jswarm.pso.init.GenericInitialization;
 
 /**
- * Basic (abstract) particle
- * 
- * @author Pablo Cingolani <pcingola@users.sourceforge.net>
+ * A generic particle
+ * @author Paulius Danėnas, <danpaulius@gmail.com>, original code by Pablo Cingolani <pcingola@users.sourceforge.net>
  */
 public abstract class Particle {
 
@@ -23,14 +22,6 @@ public abstract class Particle {
     double position[];
     /** Velocity */
     double velocity[];
-
-    //-------------------------------------------------------------------------
-    // Constructors
-    //-------------------------------------------------------------------------
-
-    public Particle() {
-        throw new RuntimeException("You probably need to implement your own 'Particle' class");
-    }
 
     /**
      * Constructor 
@@ -48,10 +39,6 @@ public abstract class Particle {
         int dimension = sampleParticle.getDimension();
         allocate(dimension);
     }
-
-    //-------------------------------------------------------------------------
-    // Methods
-    //-------------------------------------------------------------------------
 
     /** Allocate memory */
     private void allocate(int dimension) {
@@ -133,7 +120,7 @@ public abstract class Particle {
 
     /**
      * Create a new instance of this particle 
-     * @return A new particle, just like this one
+     * @return A copy of an instance of given {@link Particle}
      */
     public Object selfFactory() {
         try {
