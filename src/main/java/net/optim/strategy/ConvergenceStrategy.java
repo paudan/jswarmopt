@@ -12,15 +12,9 @@ import net.optim.jswarm.pso.Swarm;
 public class ConvergenceStrategy extends OptimizationStrategy {
 
     /* The number of search iterations, after which the search is terminated, if no improvement is observed */
-    protected int numIterConverge = 50;
-    protected Swarm swarm;
-    protected int totalIterations = -1;
-
-    public ConvergenceStrategy() {
-        swarm = null;
-        fitness = null;
-    }
-    
+    private int numIterConverge = 50;
+    private Swarm swarm;
+    private int totalIterations = -1;
     
     public ConvergenceStrategy(Swarm swarm) {
         this.swarm = swarm;

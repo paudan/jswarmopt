@@ -7,24 +7,40 @@ import net.optim.jswarm.pso.constraints.ConstraintsHandler;
 import net.optim.jswarm.pso.init.GenericInitialization;
 
 /**
- * A generic particle
- * @author Paulius Danėnas, <danpaulius@gmail.com>, original code by Pablo Cingolani <pcingola@users.sourceforge.net>
+ * Basic (abstract) particle
+ *
+ * @author Pablo Cingolani <pcingola@users.sourceforge.net>
  */
 public abstract class Particle {
 
-    /** Best fitness function so far */
+    /**
+     * Best fitness function so far
+     */
     double bestFitness;
-    /** Best particle's position so far */
+    /**
+     * Best particle's position so far
+     */
     double bestPosition[];
-    /** current fitness */
+    /**
+     * current fitness
+     */
     double fitness;
-    /** Position */
+    /**
+     * Position
+     */
     double position[];
-    /** Velocity */
+    /**
+     * Velocity
+     */
     double velocity[];
 
+    public Particle() {
+        throw new RuntimeException("You probably need to implement your own 'Particle' class");
+    }
+
     /**
-     * Constructor 
+     * Constructor
+     *
      * @param dimension : Particle's dimension
      */
     public Particle(int dimension) {
@@ -32,7 +48,8 @@ public abstract class Particle {
     }
 
     /**
-     * Constructor 
+     * Constructor
+     *
      * @param sampleParticle : A sample particle to copy
      */
     public Particle(Particle sampleParticle) {
@@ -40,7 +57,12 @@ public abstract class Particle {
         allocate(dimension);
     }
 
-    /** Allocate memory */
+    //-------------------------------------------------------------------------
+    // Methods
+    //-------------------------------------------------------------------------
+    /**
+     * Allocate memory
+     */
     private void allocate(int dimension) {
         position = new double[dimension];
         bestPosition = new double[dimension];
@@ -53,60 +75,65 @@ public abstract class Particle {
 
     /**
      * Apply position and velocity constraints (clamp)
+     *
      * @param minPosition : Minimum position
      * @param maxPosition : Maximum position
      * @param minVelocity : Minimum velocity
      * @param maxVelocity : Maximum velocity
      * @param constraintHandler: Constraints handler
      */
-    public void applyConstraints(double[] minPosition, double[] maxPosition, double[] minVelocity, 
+    public void applyConstraints(double[] minPosition, double[] maxPosition, double[] minVelocity,
             double[] maxVelocity, ConstraintsHandler constraintHandler) {
         for (int i = 0; i < position.length; i++) {
-           if (minPosition != null && !Double.isNaN(minPosition[i])) 
-               position[i] = (minPosition[i] > position[i] ? constraintHandler.getPosition(this, i, minPosition) : position[i]);
-           if (maxPosition != null && !Double.isNaN(maxPosition[i])) 
-               position[i] = (maxPosition[i] < position[i] ? constraintHandler.getPosition(this, i, maxPosition) : position[i]);
-           if (minVelocity != null && !Double.isNaN(minVelocity[i])) 
-               velocity[i] = (minVelocity[i] > velocity[i] ? constraintHandler.getVelocity(this, i, minVelocity) : velocity[i]);
-           if (maxVelocity != null && !Double.isNaN(maxVelocity[i])) 
-               velocity[i] = (maxVelocity[i] < velocity[i] ? constraintHandler.getVelocity(this, i, maxVelocity) : velocity[i]);
+            if (minPosition != null && !Double.isNaN(minPosition[i]))
+                position[i] = (minPosition[i] > position[i] ? constraintHandler.getPosition(this, i, minPosition) : position[i]);
+            if (maxPosition != null && !Double.isNaN(maxPosition[i]))
+                position[i] = (maxPosition[i] < position[i] ? constraintHandler.getPosition(this, i, maxPosition) : position[i]);
+            if (minVelocity != null && !Double.isNaN(minVelocity[i]))
+                velocity[i] = (minVelocity[i] > velocity[i] ? constraintHandler.getVelocity(this, i, minVelocity) : velocity[i]);
+            if (maxVelocity != null && !Double.isNaN(maxVelocity[i]))
+                velocity[i] = (maxVelocity[i] < velocity[i] ? constraintHandler.getVelocity(this, i, maxVelocity) : velocity[i]);
         }
     }
 
-    /** Copy position[] to positionCopy[] */
+    /**
+     * Copy position[] to positionCopy[]
+     */
     public void copyPosition(double positionCopy[]) {
         for (int i = 0; i < position.length; i++)
-            positionCopy[i] = position[i]; 
+            positionCopy[i] = position[i];
     }
 
-    /** Copy position[] to bestPosition[] */
+    /**
+     * Copy position[] to bestPosition[]
+     */
     public void copyPosition2Best() {
         for (int i = 0; i < position.length; i++)
-            bestPosition[i] = position[i];    
+            bestPosition[i] = position[i];
     }
 
     public double getBestFitness() {
-            return bestFitness;
+        return bestFitness;
     }
 
     public double[] getBestPosition() {
-            return bestPosition;
+        return bestPosition;
     }
 
     public int getDimension() {
-            return position.length;
+        return position.length;
     }
 
     public double getFitness() {
-            return fitness;
+        return fitness;
     }
 
     public double[] getPosition() {
-            return position;
+        return position;
     }
 
     public double[] getVelocity() {
-            return velocity;
+        return velocity;
     }
 
     public void init(GenericInitialization init) {
@@ -119,8 +146,9 @@ public abstract class Particle {
     }
 
     /**
-     * Create a new instance of this particle 
-     * @return A copy of an instance of given {@link Particle}
+     * Create a new instance of this particle
+     *
+     * @return A new particle, just like this one
      */
     public Object selfFactory() {
         try {
@@ -150,8 +178,9 @@ public abstract class Particle {
     }
 
     /**
-     * Set fitness and best fitness accordingly.
-     * If it's the best fitness so far, copy data to bestFitness[]
+     * Set fitness and best fitness accordingly. If it's the best fitness so
+     * far, copy data to bestFitness[]
+     *
      * @param fitness : New fitness value
      * @param maximize : Are we maximizing or minimizing fitness function?
      */
@@ -173,29 +202,25 @@ public abstract class Particle {
         this.velocity = velocity;
     }
 
-    /** Printable string */
     @Override
     public String toString() {
         String str = "fitness: " + fitness + "\tbest fitness: " + bestFitness;
 
         if (position != null) {
-                str += "\n\tPosition:\t";
-                for (int i = 0; i < position.length; i++)
-                        str += position[i] + "\t";
+            str += "\n\tPosition:\t";
+            for (int i = 0; i < position.length; i++)
+                str += position[i] + "\t";
         }
-
         if (velocity != null) {
-                str += "\n\tVelocity:\t";
-                for (int i = 0; i < velocity.length; i++)
-                        str += velocity[i] + "\t";
+            str += "\n\tVelocity:\t";
+            for (int i = 0; i < velocity.length; i++)
+                str += velocity[i] + "\t";
         }
-
         if (bestPosition != null) {
-                str += "\n\tBest:\t";
-                for (int i = 0; i < bestPosition.length; i++)
-                        str += bestPosition[i] + "\t";
+            str += "\n\tBest:\t";
+            for (int i = 0; i < bestPosition.length; i++)
+                str += bestPosition[i] + "\t";
         }
-
         str += "\n";
         return str;
     }

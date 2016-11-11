@@ -21,7 +21,7 @@ public class RepulsiveSwarm extends Swarm {
 	/**
 	 * Create a Swarm and set default values
 	 * @param numberOfParticles : Number of particles in this swarm (should be greater than 0). 
-	 * If unsure about this parameter, try {@link Swarm#DEFAULT_NUMBER_OF_PARTICLES} or greater
+	 * If unsure about this parameter, try Swarm.DEFAULT_NUMBER_OF_PARTICLES or greater
 	 * @param sampleParticle : A particle that is a sample to build all other particles
 	 * @param fitnessFunction : Fitness function used to evaluate each particle
 	 */
