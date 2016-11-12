@@ -1,8 +1,8 @@
 package net.optim.pso;
 
-import net.optim.jswarm.FitnessFunction;
-import net.optim.jswarm.Particle;
-import net.optim.jswarm.pso.Swarm;
+import net.metaopt.swarm.FitnessFunction;
+import net.metaopt.swarm.Particle;
+import net.metaopt.swarm.pso.Swarm;
 
 /**
  * PSO test on Rosenbrock function

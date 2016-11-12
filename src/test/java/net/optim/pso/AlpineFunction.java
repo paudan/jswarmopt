@@ -1,9 +1,9 @@
 package net.optim.pso;
 
-import net.optim.jswarm.FitnessFunction;
-import net.optim.jswarm.Particle;
-import net.optim.jswarm.pso.RepulsiveSwarm;
-import net.optim.jswarm.pso.Swarm;
+import net.metaopt.swarm.FitnessFunction;
+import net.metaopt.swarm.Particle;
+import net.metaopt.swarm.pso.RepulsiveSwarm;
+import net.metaopt.swarm.pso.Swarm;
 
 /**
  * Maximize Alpine function,  http://clerc.maurice.free.fr/pso/Alpine/Alpine_Function.htm

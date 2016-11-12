@@ -1,10 +1,10 @@
 package net.optim.pso;
 
-import net.optim.jswarm.FitnessFunction;
-import net.optim.jswarm.Particle;
-import net.optim.jswarm.pso.Swarm;
-import net.optim.jswarm.pso.neighbor.Neighborhood;
-import net.optim.jswarm.pso.neighbor.Neighborhood1D;
+import net.metaopt.swarm.FitnessFunction;
+import net.metaopt.swarm.Particle;
+import net.metaopt.swarm.pso.Swarm;
+import net.metaopt.swarm.pso.neighbour.Neighborhood;
+import net.metaopt.swarm.pso.neighbour.Neighborhood1D;
 
 /**
  * PSO test on Rosenbrock function (30 dimensions)
