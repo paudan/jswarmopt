@@ -13,9 +13,9 @@ import net.metaopt.swarm.pso.Swarm;
  */
 public class MultipleRestartStrategy extends OptimizationStrategy {
 
-    private Swarm swarm;
-    private int numIterations = 20;
-    private int numRestarts = 10;
+    protected Swarm swarm;
+    protected int numIterations = 20;
+    protected int numRestarts = 10;
 
     public MultipleRestartStrategy(int n, Swarm swarm) {
         this.swarm = swarm;
