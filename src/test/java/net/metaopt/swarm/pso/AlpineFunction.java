@@ -1,4 +1,4 @@
-package net.optim.pso;
+package net.metaopt.swarm.pso;
 
 import net.metaopt.swarm.FitnessFunction;
 import net.metaopt.swarm.Particle;

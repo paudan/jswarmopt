@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2017 Paulius Danenas
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package net.metaopt.swarm;
 
 import java.lang.reflect.InvocationTargetException;
@@ -7,15 +23,11 @@ import net.metaopt.swarm.pso.constraints.ConstraintsHandler;
 import net.metaopt.swarm.pso.init.GenericInitialization;
 
 /**
- * Basic (abstract) particle
- *
- * @author Pablo Cingolani <pcingola@users.sourceforge.net>
+ * Abstract swarm particle
  */
 public abstract class Particle {
 
-    /**
-     * Best fitness function so far
-     */
+    /** Best fitness function so far */
     double bestFitness;
     /**
      * Best particle's position so far
@@ -40,7 +52,6 @@ public abstract class Particle {
 
     /**
      * Constructor
-     *
      * @param dimension : Particle's dimension
      */
     public Particle(int dimension) {
@@ -49,7 +60,6 @@ public abstract class Particle {
 
     /**
      * Constructor
-     *
      * @param sampleParticle : A sample particle to copy
      */
     public Particle(Particle sampleParticle) {
@@ -57,12 +67,6 @@ public abstract class Particle {
         allocate(dimension);
     }
 
-    //-------------------------------------------------------------------------
-    // Methods
-    //-------------------------------------------------------------------------
-    /**
-     * Allocate memory
-     */
     private void allocate(int dimension) {
         position = new double[dimension];
         bestPosition = new double[dimension];
@@ -75,7 +79,6 @@ public abstract class Particle {
 
     /**
      * Apply position and velocity constraints (clamp)
-     *
      * @param minPosition : Minimum position
      * @param maxPosition : Maximum position
      * @param minVelocity : Minimum velocity
@@ -147,23 +150,12 @@ public abstract class Particle {
 
     /**
      * Create a new instance of this particle
-     *
      * @return A new particle, just like this one
      */
     public Object selfFactory() {
         try {
             return this.getClass().getConstructor((Class[]) null).newInstance((Object[]) null);
-        } catch (NoSuchMethodException ex) {
-            Logger.getLogger(Particle.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
-            Logger.getLogger(Particle.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(Particle.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(Particle.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(Particle.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(Particle.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -178,9 +170,7 @@ public abstract class Particle {
     }
 
     /**
-     * Set fitness and best fitness accordingly. If it's the best fitness so
-     * far, copy data to bestFitness[]
-     *
+     * Set fitness and best fitness accordingly. If it's the best fitness so far, copy data to bestFitness[]
      * @param fitness : New fitness value
      * @param maximize : Are we maximizing or minimizing fitness function?
      */

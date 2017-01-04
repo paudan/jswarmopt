@@ -14,18 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.metaopt.swarm;
+package net.metaopt.strategy;
 
-/**
- * Swarm configuration exception
- * @author Paulius Danėnas, <danpaulius@gmail.com>
- */
-public class ConfigurationException extends Exception {
+import net.metaopt.swarm.pso.Swarm;
 
-    public ConfigurationException() {
+public class StateResult {
+    
+    public enum ProcessState {
+        STARTED, EXECUTING, FINISHED
+    }
+    
+    public Swarm swarm;
+    public Double bestFitness;
+    public double[] bestResult;
+    public Integer currentIteration, totalIterations, numRuns;
+    public ProcessState state;
+
+    public StateResult(Swarm swarm, Double bestFitness, double[] bestResult, ProcessState state) {
+        this.swarm = swarm;
+        this.bestFitness = bestFitness;
+        this.bestResult = bestResult;
+        this.state = state;
     }
 
-    public ConfigurationException(String msg) {
-        super(msg);
+    public StateResult(Swarm swarm, ProcessState state) {
+        this.swarm = swarm;
+        this.state = state;
     }
+
 }

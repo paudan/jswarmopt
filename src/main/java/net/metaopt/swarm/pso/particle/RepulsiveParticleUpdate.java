@@ -7,8 +7,6 @@ import net.metaopt.swarm.pso.RepulsiveSwarm;
 /**
  * Particle update strategy 
  * Warning: It's designed to be used with SwarmRepulsive swarms
- * 
- * @author Pablo Cingolani <pcingola@users.sourceforge.net>
  */
 public class RepulsiveParticleUpdate implements ParticleUpdate {
 
@@ -26,9 +24,9 @@ public class RepulsiveParticleUpdate implements ParticleUpdate {
      * @param particle : Sample of particles that will be updated later
      */
     public RepulsiveParticleUpdate(Particle particle) {
-            rlocal = new double[particle.getDimension()];
-            rother = new double[particle.getDimension()];
-            rneighborhood = new double[particle.getDimension()];
+        rlocal = new double[particle.getDimension()];
+        rother = new double[particle.getDimension()];
+        rneighborhood = new double[particle.getDimension()];
     }
 
     @Override
@@ -37,12 +35,11 @@ public class RepulsiveParticleUpdate implements ParticleUpdate {
 
         int i, dim = swarm.getSampleParticle().getDimension();
         for (i = 0; i < dim; i++) {
-                rlocal[i] = Math.random();
-                rother[i] = Math.random();
-                rneighborhood[i] = Math.random();
+            rlocal[i] = Math.random();
+            rother[i] = Math.random();
+            rneighborhood[i] = Math.random();
         }
     }
-
 
     @Override
     public void update(Swarm swarm, Particle particle) {
@@ -68,10 +65,10 @@ public class RepulsiveParticleUpdate implements ParticleUpdate {
 
             // Update velocity
             velocity[i] = swarmRepulsive.getInertia() * velocity[i] // Inertia
-                + rlocal[i] * swarmRepulsive.getParticleIncrement() * (particleBestPosition[i] - position[i]) // Local best
-                + rneighborhood[i] * swarm.getNeighborhoodIncrement() * (neighBestPosition[i] - position[i]) // Neighborhood best					
-                + rother[i] * swarmRepulsive.getOtherParticleIncrement() * (otherParticleBestPosition[i] - position[i]) // other Particle Best Position
-                + randRand * swarmRepulsive.getRandomIncrement() * randVelocity; // Random velocity
+                    + rlocal[i] * swarmRepulsive.getParticleIncrement() * (particleBestPosition[i] - position[i]) // Local best
+                    + rneighborhood[i] * swarm.getNeighborhoodIncrement() * (neighBestPosition[i] - position[i]) // Neighborhood best					
+                    + rother[i] * swarmRepulsive.getOtherParticleIncrement() * (otherParticleBestPosition[i] - position[i]) // other Particle Best Position
+                    + randRand * swarmRepulsive.getRandomIncrement() * randVelocity; // Random velocity
         }
     }
 
