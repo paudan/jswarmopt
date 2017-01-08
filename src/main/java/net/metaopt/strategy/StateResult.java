@@ -16,7 +16,7 @@
  */
 package net.metaopt.strategy;
 
-import net.metaopt.swarm.pso.Swarm;
+import net.metaopt.swarm.Population;
 
 public class StateResult {
     
@@ -24,20 +24,20 @@ public class StateResult {
         STARTED, EXECUTING, FINISHED
     }
     
-    public Swarm swarm;
+    public Population swarm;
     public Double bestFitness;
     public double[] bestResult;
     public Integer currentIteration, totalIterations, numRuns;
     public ProcessState state;
 
-    public StateResult(Swarm swarm, Double bestFitness, double[] bestResult, ProcessState state) {
+    public StateResult(Population swarm, Double bestFitness, double[] bestResult, ProcessState state) {
         this.swarm = swarm;
         this.bestFitness = bestFitness;
         this.bestResult = bestResult;
         this.state = state;
     }
 
-    public StateResult(Swarm swarm, ProcessState state) {
+    public StateResult(Population swarm, ProcessState state) {
         this.swarm = swarm;
         this.state = state;
     }

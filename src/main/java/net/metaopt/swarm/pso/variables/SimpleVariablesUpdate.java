@@ -16,12 +16,13 @@
  */
 package net.metaopt.swarm.pso.variables;
 
+import net.metaopt.swarm.Population;
 import net.metaopt.swarm.pso.Swarm;
 
 public class SimpleVariablesUpdate implements VariablesUpdate {
 
     @Override
-    public void update(Swarm swarm) {
+    public void update(Population swarm) {
       
     }
     

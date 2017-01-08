@@ -1,8 +1,6 @@
 package net.metaopt.swarm.pso;
 
 import net.metaopt.swarm.FitnessFunction;
-import net.metaopt.swarm.Particle;
-import net.metaopt.swarm.pso.Swarm;
 
 /**
  * PSO test on Rosenbrock function
@@ -10,17 +8,10 @@ import net.metaopt.swarm.pso.Swarm;
  */
 public class RosenbrockFunction {
     
-    public static class RosenbrockParticle extends Particle {
-
-        public RosenbrockParticle() {
-            super(2);
-        }
-    }
-    
     public void optimize() {
         
         System.out.println("Begin: Example Rosenbrock\n");
-        Swarm swarm = new Swarm(Swarm.DEFAULT_NUMBER_OF_PARTICLES, new RosenbrockParticle(), new FitnessFunction(false) {
+        Swarm swarm = new Swarm(Swarm.DEFAULT_NUMBER_OF_PARTICLES, new Particle(2), new FitnessFunction(false) {
 
             @Override
             public double evaluate(double[] position) {

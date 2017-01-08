@@ -16,7 +16,7 @@
  */
 package net.metaopt.swarm.pso.particle;
 
-import net.metaopt.swarm.Particle;
+import net.metaopt.swarm.pso.Particle;
 import net.metaopt.swarm.pso.Swarm;
 
 /**

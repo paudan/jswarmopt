@@ -20,8 +20,6 @@ import net.metaopt.swarm.ConfigurationException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.metaopt.strategy.StateResult.ProcessState;
-import net.metaopt.swarm.FitnessFunction;
-import net.metaopt.swarm.Particle;
 import net.metaopt.swarm.pso.Swarm;
 
 /**
@@ -30,43 +28,39 @@ import net.metaopt.swarm.pso.Swarm;
  */
 public class MultipleRestartStrategy extends OptimizationStrategy {
 
-    protected Swarm swarm;
     protected int numIterations = 20;
     protected int numRestarts = 10;
 
-    public MultipleRestartStrategy(int n, Swarm swarm) {
-        this.swarm = swarm;
-        this.fitness = swarm.getFitnessFunction();
+    public MultipleRestartStrategy(int n) {
         numRestarts = n;
     }
 
-    public MultipleRestartStrategy(int n, Particle sample, FitnessFunction fitness) {
-        swarm = new Swarm(Swarm.DEFAULT_NUMBER_OF_PARTICLES, sample, fitness);
-        this.fitness = fitness;
-        this.numRestarts = n;
+    public MultipleRestartStrategy(int n, Swarm swarm) {
+        setPopulation(swarm);
+        numRestarts = n;
     }
 
     @Override
     public void optimize() throws ConfigurationException {
-        if (swarm == null)
-            throw new ConfigurationException("Swarms were not initialized");
+        if (population == null)
+            throw new ConfigurationException("Population was not initialized");
         double[] best = new double[numRestarts];
         double[][] bestSol = new double[numRestarts][];
         for (int i = 0; i < numRestarts; i++) {
             try {
-                swarm = swarm.clone();
+                population = population.clone();
             } catch (CloneNotSupportedException ex) {
                 Logger.getLogger(MultipleRestartStrategy.class.getName()).log(Level.SEVERE, null, ex);
-                swarm = new Swarm(Swarm.DEFAULT_NUMBER_OF_PARTICLES, swarm.getSampleParticle(), fitness);
+                population = factory.createDefaultPopulation(population);
             }
-            StateResult state = new StateResult(swarm, ProcessState.STARTED);
-            setChanged();
-            notifyObservers(state);
-            for (int k = 0; k < numIterations; k++)
-                swarm.evolve();
-            best[i] = swarm.getBestFitness();
-            bestSol[i] = swarm.getBestPosition();
-            state = new StateResult(swarm, best[i], bestSol[i], ProcessState.EXECUTING);
+            notifyStarted();
+            for (int k = 0; k < numIterations; k++) {
+                population.evolve();
+                totalIterations++;
+            }
+            best[i] = population.getBestFitness();
+            bestSol[i] = population.getBestPosition();
+            StateResult state = new StateResult(population, best[i], bestSol[i], ProcessState.EXECUTING);
             state.numRuns = i;
             state.totalIterations = numIterations;
             setChanged();
@@ -91,7 +85,7 @@ public class MultipleRestartStrategy extends OptimizationStrategy {
                     bestSolution = bestSol[i];
                 }
             }
-        StateResult state = new StateResult(swarm, bestFitness, bestSolution, ProcessState.FINISHED);
+        StateResult state = new StateResult(population, bestFitness, bestSolution, ProcessState.FINISHED);
         state.numRuns = numRestarts;
         setChanged();
         notifyObservers(state);

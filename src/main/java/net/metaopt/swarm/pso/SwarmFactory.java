@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Paulius Danenas <danpaulius@gmail.com>
+ * Copyright (C) 2017 Paulius Danenas
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,16 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.metaopt.swarm.pso.variables;
+package net.metaopt.swarm.pso;
 
+import net.metaopt.swarm.FitnessFunction;
+import net.metaopt.swarm.Individual;
 import net.metaopt.swarm.Population;
-import net.metaopt.swarm.pso.Swarm;
+import net.metaopt.swarm.PopulationFactory;
 
-/**
- * Swarm variables update
- * In every Swarm.evolve() iteration, update() is called 
- */
-public interface VariablesUpdate {
+public class SwarmFactory implements PopulationFactory {
 
-    public void update(Population swarm);
+    @Override
+    public Population createDefaultPopulation(int size, FitnessFunction function, Individual individual) {
+        return new Swarm(size, (Particle) individual, function);
+    }
+
+    @Override
+    public Population createDefaultPopulation(Population population) {
+        return new Swarm(Swarm.DEFAULT_NUMBER_OF_PARTICLES, (Particle) population.getSampleIndividual(), 
+                population.getFitnessFunction());
+    }
+    
 }

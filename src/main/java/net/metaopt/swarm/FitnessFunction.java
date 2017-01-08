@@ -16,6 +16,8 @@
  */
 package net.metaopt.swarm;
 
+import net.metaopt.swarm.pso.Particle;
+
 /**
  * Abstract fitness function. Each optimization task must extend it
  */

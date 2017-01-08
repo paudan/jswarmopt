@@ -1,8 +1,6 @@
 package net.metaopt.swarm.pso;
 
 import net.metaopt.swarm.FitnessFunction;
-import net.metaopt.swarm.Particle;
-import net.metaopt.swarm.pso.Swarm;
 import net.metaopt.swarm.pso.neighbour.Neighborhood;
 import net.metaopt.swarm.pso.neighbour.Neighborhood1D;
 
@@ -16,17 +14,10 @@ import net.metaopt.swarm.pso.neighbour.Neighborhood1D;
  */
 public class RosenbrockFunction30 {
     
-    public static class RosenbrockParticle extends Particle {
-
-        public RosenbrockParticle() {
-            super(30);
-        }
-    }
-    
     public void optimize() {
         
         System.out.println("Begin: Example Rosenbrock\n");
-        Swarm swarm = new Swarm(1000, new RosenbrockParticle(), new FitnessFunction(false) {
+        Swarm swarm = new Swarm(1000, new Particle(30), new FitnessFunction(false) {
 
             @Override
             public double evaluate(double[] position) {

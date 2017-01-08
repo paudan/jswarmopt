@@ -19,7 +19,7 @@ package net.metaopt.strategy;
 import net.metaopt.strategy.StateResult.ProcessState;
 import net.metaopt.swarm.ConfigurationException;
 import net.metaopt.swarm.FitnessFunction;
-import net.metaopt.swarm.Particle;
+import net.metaopt.swarm.pso.Particle;
 import net.metaopt.swarm.pso.Swarm;
 
 /**
@@ -30,36 +30,29 @@ public class ConvergenceStrategy extends OptimizationStrategy  {
 
     /* The number of search iterations, after which the search is terminated, if no improvement is observed */
     protected int numIterConverge = 50;
-    protected Swarm swarm;
-    protected int totalIterations = -1;
-    protected boolean endOpt = false;
-    
-    public ConvergenceStrategy(Swarm swarm) {
-        this.swarm = swarm;
-        this.fitness = swarm.getFitnessFunction();
+
+    public ConvergenceStrategy() {
     }
 
-    public ConvergenceStrategy(Particle sample, FitnessFunction fitness) {
-        swarm = new Swarm(Swarm.DEFAULT_NUMBER_OF_PARTICLES, sample, fitness);
-        this.fitness = fitness;
+    public ConvergenceStrategy(Swarm swarm) {
+        this.setPopulation(swarm);
     }
-    
+
     @Override
     public void optimize() throws ConfigurationException {
-        if (swarm == null)
+        if (population == null)
             throw new ConfigurationException("Swarm was not initialized");
+        fitness = population.getFitnessFunction();
         int numIter = 0;
         totalIterations = 0;
-        swarm.evolve();
-        double currBest = swarm.getBestFitness();
+        population.evolve();
+        double currBest = population.getBestFitness();
         bestFitness = currBest;
-        StateResult state = new StateResult(swarm, bestFitness, bestSolution, ProcessState.STARTED);
-        setChanged();
-        notifyObservers(state);
+        notifyStarted();
         boolean stop = false;
-        while (!stop && !endOpt) {
-            swarm.evolve();
-            currBest = swarm.getBestFitness();
+        while (!stop && !stopFlag) {
+            population.evolve();
+            currBest = population.getBestFitness();
             boolean cond = fitness.isMaximize() ? currBest > bestFitness : currBest < bestFitness;
             if (cond) {
                 bestFitness = currBest;
@@ -68,22 +61,14 @@ public class ConvergenceStrategy extends OptimizationStrategy  {
                 numIter++;
             totalIterations++;
             stop = numIter == numIterConverge;
-            state = new StateResult(swarm, bestFitness, bestSolution, ProcessState.EXECUTING);
+            StateResult state = new StateResult(population, bestFitness, bestSolution, ProcessState.EXECUTING);
             state.currentIteration = numIter;
             state.totalIterations = totalIterations;
             setChanged();
             notifyObservers(state);
             //System.out.println("Iteration: " + numIter + ", best fitness: " + bestFitness);
         }
-        bestSolution = swarm.getBestPosition();
-        state = new StateResult(swarm, bestFitness, bestSolution, ProcessState.FINISHED);
-        state.totalIterations = totalIterations;
-        setChanged();
-        notifyObservers(state);
-    }
-    
-    public void stopOptimization() {
-        endOpt = true;
+        notifyFinished(totalIterations);
     }
 
     public int getNumIterationsConverge() {
@@ -96,21 +81,6 @@ public class ConvergenceStrategy extends OptimizationStrategy  {
      */
     public void setNumIterationsConverge(int numIterConverge) {
         this.numIterConverge = numIterConverge;
-    }
-
-    public Swarm getSwarm() {
-        return swarm;
-    }
-
-    public void setSwarm(Swarm swarm) {
-        this.swarm = swarm;
-    }
-
-    /* 
-    * Return the total number of iterations, which were needed to obtain optimum solution
-    */
-    public int getTotalIterations() {
-        return totalIterations;
     }
     
 }

@@ -16,7 +16,7 @@
  */
 package net.metaopt.swarm.pso.constraints;
 
-import net.metaopt.swarm.Particle;
+import net.metaopt.swarm.pso.Particle;
 
 /**
  * Set the particle onto the nearest boundary

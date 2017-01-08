@@ -17,7 +17,6 @@
 package net.metaopt.swarm.pso;
 
 import net.metaopt.swarm.FitnessFunction;
-import net.metaopt.swarm.Particle;
 import net.metaopt.swarm.pso.particle.RepulsiveParticleUpdate;
 
 /**

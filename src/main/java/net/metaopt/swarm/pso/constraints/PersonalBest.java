@@ -16,7 +16,7 @@
  */
 package net.metaopt.swarm.pso.constraints;
 
-import net.metaopt.swarm.Particle;
+import net.metaopt.swarm.pso.Particle;
 
 /**
  * Implements Personal best (PBest) settings (the particle is repositioned onto its personal best)

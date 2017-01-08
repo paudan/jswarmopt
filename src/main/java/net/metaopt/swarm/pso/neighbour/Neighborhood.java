@@ -16,7 +16,7 @@
  */
 package net.metaopt.swarm.pso.neighbour;
 
-import net.metaopt.swarm.Particle;
+import net.metaopt.swarm.pso.Particle;
 import java.util.Collection;
 import java.util.HashMap;
 import net.metaopt.swarm.pso.Swarm;

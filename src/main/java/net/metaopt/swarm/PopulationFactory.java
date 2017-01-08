@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Paulius Danenas <danpaulius@gmail.com>
+ * Copyright (C) 2017 Paulius Danenas
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,16 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.metaopt.swarm.pso.variables;
-
-import net.metaopt.swarm.Population;
-import net.metaopt.swarm.pso.Swarm;
+package net.metaopt.swarm;
 
 /**
- * Swarm variables update
- * In every Swarm.evolve() iteration, update() is called 
+ * Interface to create population (swarm)instances
  */
-public interface VariablesUpdate {
-
-    public void update(Population swarm);
+public interface PopulationFactory {
+    
+    public Population createDefaultPopulation(int size, FitnessFunction function, Individual individual);
+    
+    public Population createDefaultPopulation(Population population);
+    
 }

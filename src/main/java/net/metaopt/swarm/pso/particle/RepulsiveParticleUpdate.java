@@ -1,6 +1,6 @@
 package net.metaopt.swarm.pso.particle;
 
-import net.metaopt.swarm.Particle;
+import net.metaopt.swarm.pso.Particle;
 import net.metaopt.swarm.pso.Swarm;
 import net.metaopt.swarm.pso.RepulsiveSwarm;
 
@@ -33,7 +33,7 @@ public class RepulsiveParticleUpdate implements ParticleUpdate {
     public void begin(Swarm swarm) {
         randRand = Math.random();// Random factor for random velocity
 
-        int i, dim = swarm.getSampleParticle().getDimension();
+        int i, dim = swarm.getSampleIndividual().getDimension();
         for (i = 0; i < dim; i++) {
             rlocal[i] = Math.random();
             rother[i] = Math.random();

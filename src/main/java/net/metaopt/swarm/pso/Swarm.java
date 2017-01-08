@@ -16,6 +16,7 @@
  */
 package net.metaopt.swarm.pso;
 
+import net.metaopt.swarm.Population;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -25,7 +26,6 @@ import net.metaopt.swarm.pso.particle.SimpleParticleUpdate;
 import net.metaopt.swarm.pso.particle.ParticleUpdate;
 import net.metaopt.swarm.pso.neighbour.Neighborhood;
 import net.metaopt.swarm.FitnessFunction;
-import net.metaopt.swarm.Particle;
 import net.metaopt.swarm.pso.constraints.ConstraintsHandler;
 import net.metaopt.swarm.pso.constraints.NearestBoundary;
 import net.metaopt.swarm.pso.init.GenericInitialization;
@@ -35,7 +35,7 @@ import net.metaopt.swarm.pso.variables.SimpleVariablesUpdate;
 /**
  * Class implementing swarm
  */
-public class Swarm implements Iterable<Particle>, Cloneable {
+public class Swarm implements Iterable<Particle>, Population {
 
     public static double DEFAULT_GLOBAL_INCREMENT = 0.9;
     public static double DEFAULT_INERTIA = 0.95;
@@ -134,6 +134,7 @@ public class Swarm implements Iterable<Particle>, Cloneable {
      * Evaluate fitness function for every particle 
      * Warning: particles[] must be initialized and fitnessFunction must be set
      */
+    @Override
     public void evaluate() {
         if (particles == null)
             throw new RuntimeException("The swarm is not initialized");
@@ -201,6 +202,7 @@ public class Swarm implements Iterable<Particle>, Cloneable {
         return bestPosition;
     }
 
+    @Override
     public FitnessFunction getFitnessFunction() {
         return fitnessFunction;
     }
@@ -280,7 +282,7 @@ public class Swarm implements Iterable<Particle>, Cloneable {
         return particleUpdate;
     }
 
-    public Particle getSampleParticle() {
+    public Particle getSampleIndividual() {
         return sampleParticle;
     }
 
@@ -350,6 +352,7 @@ public class Swarm implements Iterable<Particle>, Cloneable {
         this.bestPosition = bestPosition;
     }
 
+    @Override
     public void setFitnessFunction(FitnessFunction fitnessFunction) {
         this.fitnessFunction = fitnessFunction;
     }

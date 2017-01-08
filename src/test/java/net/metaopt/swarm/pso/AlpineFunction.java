@@ -1,9 +1,6 @@
 package net.metaopt.swarm.pso;
 
 import net.metaopt.swarm.FitnessFunction;
-import net.metaopt.swarm.Particle;
-import net.metaopt.swarm.pso.RepulsiveSwarm;
-import net.metaopt.swarm.pso.Swarm;
 
 /**
  * Maximize Alpine function,  http://clerc.maurice.free.fr/pso/Alpine/Alpine_Function.htm
@@ -14,17 +11,10 @@ import net.metaopt.swarm.pso.Swarm;
  */
 public class AlpineFunction {
     
-    public static class AlpineParticle extends Particle {
-
-        public AlpineParticle() {
-            super(2);
-        }
-    }
-    
     public void optimize() {
         
         System.out.println("Alpine function example\n");
-        Swarm swarm = new RepulsiveSwarm(RepulsiveSwarm.DEFAULT_NUMBER_OF_PARTICLES, new AlpineParticle(), new FitnessFunction(false) {
+        Swarm swarm = new RepulsiveSwarm(RepulsiveSwarm.DEFAULT_NUMBER_OF_PARTICLES, new Particle(2), new FitnessFunction(false) {
 
             @Override
             public double evaluate(double[] position) {
