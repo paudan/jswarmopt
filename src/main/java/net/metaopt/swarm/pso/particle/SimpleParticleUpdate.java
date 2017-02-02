@@ -16,6 +16,7 @@
  */
 package net.metaopt.swarm.pso.particle;
 
+import java.util.Random;
 import net.metaopt.swarm.pso.Particle;
 import net.metaopt.swarm.pso.Swarm;
 
@@ -44,10 +45,11 @@ public class SimpleParticleUpdate implements ParticleUpdate {
     @Override
     public void begin(Swarm swarm) {
         int i, dim = swarm.getSampleIndividual().getDimension();
+        Random rnd = swarm.getRandomGenerator();
         for (i = 0; i < dim; i++) {
-            rlocal[i] = Math.random();
-            rglobal[i] = Math.random();
-            rneighborhood[i] = Math.random();
+            rlocal[i] = rnd.nextDouble();
+            rglobal[i] = rnd.nextDouble();
+            rneighborhood[i] = rnd.nextDouble();
         }
     }
 

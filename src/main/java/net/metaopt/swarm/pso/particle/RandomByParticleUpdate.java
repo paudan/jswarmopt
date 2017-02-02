@@ -16,6 +16,7 @@
  */
 package net.metaopt.swarm.pso.particle;
 
+import java.util.Random;
 import net.metaopt.swarm.pso.Particle;
 import net.metaopt.swarm.pso.Swarm;
 
@@ -31,10 +32,11 @@ public class RandomByParticleUpdate implements ParticleUpdate {
         double globalBestPosition[] = swarm.getBestPosition();
         double particleBestPosition[] = particle.getBestPosition();
         double neighBestPosition[] = swarm.getNeighborhoodBestPosition(particle);
-
-        double rlocal = Math.random();
-        double rneighborhood = Math.random();
-        double rglobal = Math.random();
+        
+        Random rnd = swarm.getRandomGenerator();
+        double rlocal = rnd.nextDouble();
+        double rneighborhood = rnd.nextDouble();
+        double rglobal = rnd.nextDouble();
 
         for (int i = 0; i < position.length; i++) {
             position[i] = position[i] + velocity[i];

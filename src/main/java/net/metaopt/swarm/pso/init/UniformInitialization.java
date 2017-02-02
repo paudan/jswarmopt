@@ -39,7 +39,7 @@ public class UniformInitialization implements GenericInitialization {
         if (Double.isNaN(minPosition[index])) throw new RuntimeException("minPosition[" + index + "] is NaN!");
         if (Double.isInfinite(minPosition[index])) throw new RuntimeException("minPosition[" + index + "] is Infinite!");
         
-        return (maxPosition[index] - minPosition[index]) * Math.random() + minPosition[index];
+        return (maxPosition[index] - minPosition[index]) * swarm.getRandomGenerator().nextDouble() + minPosition[index];
     }
 
     @Override
@@ -53,7 +53,7 @@ public class UniformInitialization implements GenericInitialization {
         if (Double.isNaN(minVelocity[index])) throw new RuntimeException("minVelocity[" + index + "] is NaN!");
         if (Double.isInfinite(minVelocity[index])) throw new RuntimeException("minVelocity[" + index + "] is Infinite!");
             
-        return (maxVelocity[index] - minVelocity[index]) * Math.random() + minVelocity[index];
+        return (maxVelocity[index] - minVelocity[index]) * swarm.getRandomGenerator().nextDouble() + minVelocity[index];
     }
     
 }

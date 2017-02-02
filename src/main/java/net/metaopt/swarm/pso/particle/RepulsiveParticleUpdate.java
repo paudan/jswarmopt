@@ -1,5 +1,6 @@
 package net.metaopt.swarm.pso.particle;
 
+import java.util.Random;
 import net.metaopt.swarm.pso.Particle;
 import net.metaopt.swarm.pso.Swarm;
 import net.metaopt.swarm.pso.RepulsiveSwarm;
@@ -31,13 +32,14 @@ public class RepulsiveParticleUpdate implements ParticleUpdate {
 
     @Override
     public void begin(Swarm swarm) {
-        randRand = Math.random();// Random factor for random velocity
+        Random rnd = swarm.getRandomGenerator();
+        randRand = rnd.nextDouble();// Random factor for random velocity
 
         int i, dim = swarm.getSampleIndividual().getDimension();
         for (i = 0; i < dim; i++) {
-            rlocal[i] = Math.random();
-            rother[i] = Math.random();
-            rneighborhood[i] = Math.random();
+            rlocal[i] = rnd.nextDouble();
+            rother[i] = rnd.nextDouble();
+            rneighborhood[i] = rnd.nextDouble();
         }
     }
 
@@ -49,9 +51,10 @@ public class RepulsiveParticleUpdate implements ParticleUpdate {
         double maxVelocity[] = swarm.getMaxVelocity();
         double minVelocity[] = swarm.getMinVelocity();
         RepulsiveSwarm swarmRepulsive = (RepulsiveSwarm) swarm;
+        Random rnd = swarm.getRandomGenerator();
 
         // Randomly select other particle
-        int randOtherParticle = (int) (Math.random() * swarm.size());
+        int randOtherParticle = (int) (rnd.nextDouble() * swarm.size());
         double otherParticleBestPosition[] = swarm.getParticle(randOtherParticle).getBestPosition();
         double neighBestPosition[] = swarm.getNeighborhoodBestPosition(particle);
 
@@ -59,10 +62,8 @@ public class RepulsiveParticleUpdate implements ParticleUpdate {
         for (int i = 0; i < position.length; i++) {
             // Update position
             position[i] = position[i] + velocity[i];
-
             // Create a random velocity (one on every dimention)
-            double randVelocity = velocity[i] = (maxVelocity[i] - minVelocity[i]) * Math.random() + minVelocity[i];
-
+            double randVelocity = velocity[i] = (maxVelocity[i] - minVelocity[i]) * rnd.nextDouble() + minVelocity[i];
             // Update velocity
             velocity[i] = swarmRepulsive.getInertia() * velocity[i] // Inertia
                     + rlocal[i] * swarmRepulsive.getParticleIncrement() * (particleBestPosition[i] - position[i]) // Local best

@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 import net.metaopt.swarm.pso.variables.VariablesUpdate;
 import net.metaopt.swarm.pso.particle.SimpleParticleUpdate;
 import net.metaopt.swarm.pso.particle.ParticleUpdate;
@@ -28,6 +29,7 @@ import net.metaopt.swarm.pso.neighbour.Neighborhood;
 import net.metaopt.swarm.FitnessFunction;
 import net.metaopt.swarm.pso.constraints.ConstraintsHandler;
 import net.metaopt.swarm.pso.constraints.NearestBoundary;
+import net.metaopt.swarm.pso.constraints.RandomizedConstraintsHandler;
 import net.metaopt.swarm.pso.init.GenericInitialization;
 import net.metaopt.swarm.pso.init.UniformInitialization;
 import net.metaopt.swarm.pso.variables.SimpleVariablesUpdate;
@@ -87,6 +89,8 @@ public class Swarm implements Iterable<Particle>, Population {
     protected ConstraintsHandler constraintHandler;
     /* Particle initial value initialization */
     protected GenericInitialization initializer;
+    /* Random generator object */
+    protected Random random;
 
     //-------------------------------------------------------------------------
     // Constructors
@@ -97,8 +101,9 @@ public class Swarm implements Iterable<Particle>, Population {
      * If unsure about this parameter, try Swarm.DEFAULT_NUMBER_OF_PARTICLES or greater
      * @param sampleParticle : A particle that is a sample to build all other particles
      * @param fitnessFunction : Fitness function used to evaluate each particle
+     * @param seed Seed parameter
      */
-    public Swarm(int numberOfParticles, Particle sampleParticle, FitnessFunction fitnessFunction) {
+    public Swarm(int numberOfParticles, Particle sampleParticle, FitnessFunction fitnessFunction, long seed) {
         if (sampleParticle == null)
             throw new RuntimeException("Sample particle can't be null!");
         if (numberOfParticles <= 0)
@@ -125,7 +130,21 @@ public class Swarm implements Iterable<Particle>, Population {
         particlesList = null;
 
         constraintHandler = new NearestBoundary();
+        random = new Random();
+        random.setSeed(seed);
     }
+    
+    /**
+     * Create a Swarm with default values. The seed is set to 1
+     * @param numberOfParticles : Number of particles in this swarm (should be greater than 0). 
+     * If unsure about this parameter, try Swarm.DEFAULT_NUMBER_OF_PARTICLES or greater
+     * @param sampleParticle : A particle that is a sample to build all other particles
+     * @param fitnessFunction : Fitness function used to evaluate each particle
+     */
+    public Swarm(int numberOfParticles, Particle sampleParticle, FitnessFunction fitnessFunction) {
+        this(numberOfParticles, sampleParticle, fitnessFunction, 1);
+    }
+    
 
     //-------------------------------------------------------------------------
     // Methods
@@ -242,7 +261,7 @@ public class Swarm implements Iterable<Particle>, Population {
      * so that it doesn't influence in particle update.
      * 
      * @param particle
-     * @return
+     * @return the best particle
      */
     @SuppressWarnings("unchecked")
     public double[] getNeighborhoodBestPosition(Particle particle) {
@@ -573,6 +592,8 @@ public class Swarm implements Iterable<Particle>, Population {
 
     public void setConstraintHandler(ConstraintsHandler constraintHandler) {
         this.constraintHandler = constraintHandler;
+        if (constraintHandler instanceof RandomizedConstraintsHandler)
+            ((RandomizedConstraintsHandler)this.constraintHandler).setRandomGenerator(random);
     }
 
     public GenericInitialization getInitializer() {
@@ -589,4 +610,9 @@ public class Swarm implements Iterable<Particle>, Population {
         copy.init();
         return copy;
     }
+
+    public Random getRandomGenerator() {
+        return random;
+    }
+    
 }

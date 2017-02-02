@@ -46,7 +46,7 @@ public class SinglePointInitialization implements GenericInitialization {
         if (Double.isNaN(minVelocity[index])) throw new RuntimeException("minVelocity[" + index + "] is NaN!");
         if (Double.isInfinite(minVelocity[index])) throw new RuntimeException("minVelocity[" + index + "] is Infinite!");
             
-        return (maxVelocity[index] - minVelocity[index]) * Math.random() + minVelocity[index];
+        return (maxVelocity[index] - minVelocity[index]) * swarm.getRandomGenerator().nextDouble() + minVelocity[index];
     }
     
 }

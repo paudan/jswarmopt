@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Paulius Danenas <danpaulius@gmail.com>
+ * Copyright (C) 2017 Paulius Danenas
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,15 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.metaopt.swarm.pso.variables;
+package net.metaopt.swarm.pso.constraints;
 
-import net.metaopt.swarm.Population;
+import java.util.Random;
 
-public class SimpleVariablesUpdate implements VariablesUpdate {
+abstract public class RandomizedConstraintsHandler implements ConstraintsHandler {
 
-    @Override
-    public void update(Population swarm) {
-      
+    protected Random random;
+
+    public RandomizedConstraintsHandler() {
+        this.random = new Random();
     }
-    
+
+    public RandomizedConstraintsHandler(Random random) {
+        this.random = random;
+    }
+
+    public void setRandomGenerator(Random random) {
+        this.random = random;
+    }
+
 }

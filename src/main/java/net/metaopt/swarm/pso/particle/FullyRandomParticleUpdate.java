@@ -16,6 +16,7 @@
  */
 package net.metaopt.swarm.pso.particle;
 
+import java.util.Random;
 import net.metaopt.swarm.pso.Particle;
 import net.metaopt.swarm.pso.Swarm;
 
@@ -32,13 +33,14 @@ public class FullyRandomParticleUpdate implements ParticleUpdate {
         double globalBestPosition[] = swarm.getBestPosition();
         double particleBestPosition[] = particle.getBestPosition();
         double neighBestPosition[] = swarm.getNeighborhoodBestPosition(particle);
+        Random rnd = swarm.getRandomGenerator();
         // Update velocity and position
         for (int i = 0; i < position.length; i++) {
             position[i] = position[i] + velocity[i];
             velocity[i] = swarm.getInertia() * velocity[i] // Inertia
-                    + Math.random() * swarm.getParticleIncrement() * (particleBestPosition[i] - position[i]) // Local best
-                    + Math.random() * swarm.getNeighborhoodIncrement() * (neighBestPosition[i] - position[i]) // Neighborhood best					
-                    + Math.random() * swarm.getGlobalIncrement() * (globalBestPosition[i] - position[i]); // Global best
+                    + rnd.nextDouble() * swarm.getParticleIncrement() * (particleBestPosition[i] - position[i]) // Local best
+                    + rnd.nextDouble() * swarm.getNeighborhoodIncrement() * (neighBestPosition[i] - position[i]) // Neighborhood best					
+                    + rnd.nextDouble() * swarm.getGlobalIncrement() * (globalBestPosition[i] - position[i]); // Global best
         }
     }
 

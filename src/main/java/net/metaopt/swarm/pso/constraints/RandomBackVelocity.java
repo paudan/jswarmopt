@@ -21,11 +21,11 @@ import net.metaopt.swarm.pso.Particle;
 /**
  * Implements Random Back velocity modification
  */
-public class RandomBackVelocity implements ConstraintsHandler {
+public class RandomBackVelocity extends RandomizedConstraintsHandler {
 
     @Override
     public double getVelocity(Particle particle, int index, double[] boundingVelocity) {
-        return -Math.random() * boundingVelocity[index];
+        return -random.nextDouble() * boundingVelocity[index];
     }
 
     @Override
