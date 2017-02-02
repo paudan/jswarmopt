@@ -45,45 +45,87 @@ public class Swarm implements Iterable<Particle>, Population {
     public static double DEFAULT_PARTICLE_INCREMENT = 0.9;
     public static double VELOCITY_GRAPH_FACTOR = 10.0;
 
-    /** Best fitness so far (global best) */
+    /**
+     * Best fitness so far (global best)
+     */
     protected double bestFitness;
-    /** Index of best particle so far */
+    /**
+     * Index of best particle so far
+     */
     protected int bestParticleIndex;
-    /** Best position so far (global best) */
+    /**
+     * Best position so far (global best)
+     */
     protected double bestPosition[];
-    /** Fitness function for this swarm */
+    /**
+     * Fitness function for this swarm
+     */
     protected FitnessFunction fitnessFunction;
-    /** Global increment (for velocity update), usually called 'c2' constant */
+    /**
+     * Global increment (for velocity update), usually called 'c2' constant
+     */
     protected double globalIncrement;
-    /** Inertia (for velocity update), usually called 'w' constant */
+    /**
+     * Inertia (for velocity update), usually called 'w' constant
+     */
     protected double inertia;
-    /** Maximum position (for each dimension) */
+    /**
+     * Maximum position (for each dimension)
+     */
     protected double maxPosition[];
-    /** Maximum Velocity (for each dimension) */
+    /**
+     * Maximum Velocity (for each dimension)
+     */
     protected double maxVelocity[];
-    /** Minimum position (for each dimension) */
+    /**
+     * Minimum position (for each dimension)
+     */
     protected double minPosition[];
-    /** Minimum Velocity for each dimension. WARNING: Velocity is no in Abs value (so setting minVelocity to 0 is NOT correct!) */
+    /**
+     * Minimum Velocity for each dimension. WARNING: Velocity is no in Abs value
+     * (so setting minVelocity to 0 is NOT correct!)
+     */
     protected double minVelocity[];
-    /** How many times 'particle.evaluate()' has been called? */
+    /**
+     * How many times 'particle.evaluate()' has been called?
+     */
     protected int numEvaluations;
-    /** Number of particles in this swarm */
+    /**
+     * Number of particles in this swarm
+     */
     protected int numberOfParticles;
-    /** Particle's increment (for velocity update), usually called 'c1' constant */
+    /**
+     * Particle's increment (for velocity update), usually called 'c1' constant
+     */
     protected double particleIncrement;
-    /** Particles in this swarm */
+    /**
+     * Particles in this swarm
+     */
     protected Particle particles[];
-    /** Particle update strategy */
+    /**
+     * Particle update strategy
+     */
     protected ParticleUpdate particleUpdate;
-    /** A sample particles: Build other particles based on this one */
+    /**
+     * A sample particles: Build other particles based on this one
+     */
     protected Particle sampleParticle;
-    /** Variables update */
+    /**
+     * Variables update
+     */
     protected VariablesUpdate variablesUpdate;
-    /** Neighborhood */
+    /**
+     * Neighborhood
+     */
     protected Neighborhood neighborhood;
-    /** Neighborhood increment (for velocity update), usually called 'c3' constant */
+    /**
+     * Neighborhood increment (for velocity update), usually called 'c3'
+     * constant
+     */
     protected double neighborhoodIncrement;
-    /** A collection used for 'Iterable' interface */
+    /**
+     * A collection used for 'Iterable' interface
+     */
     protected ArrayList<Particle> particlesList;
     /* Constraints handler */
     protected ConstraintsHandler constraintHandler;
@@ -97,13 +139,16 @@ public class Swarm implements Iterable<Particle>, Population {
     //-------------------------------------------------------------------------
     /**
      * Create a Swarm and set default values
-     * @param numberOfParticles : Number of particles in this swarm (should be greater than 0). 
-     * If unsure about this parameter, try Swarm.DEFAULT_NUMBER_OF_PARTICLES or greater
-     * @param sampleParticle : A particle that is a sample to build all other particles
+     *
+     * @param numberOfParticles : Number of particles in this swarm (should be
+     * greater than 0). If unsure about this parameter, try
+     * Swarm.DEFAULT_NUMBER_OF_PARTICLES or greater
+     * @param sampleParticle : A particle that is a sample to build all other
+     * particles
      * @param fitnessFunction : Fitness function used to evaluate each particle
      * @param seed Seed parameter
      */
-    public Swarm(int numberOfParticles, Particle sampleParticle, FitnessFunction fitnessFunction, long seed) {
+    public Swarm(int numberOfParticles, Particle sampleParticle, FitnessFunction fitnessFunction, Long seed) {
         if (sampleParticle == null)
             throw new RuntimeException("Sample particle can't be null!");
         if (numberOfParticles <= 0)
@@ -131,27 +176,30 @@ public class Swarm implements Iterable<Particle>, Population {
 
         constraintHandler = new NearestBoundary();
         random = new Random();
-        random.setSeed(seed);
+        if (seed != null)
+            random.setSeed(seed);
     }
-    
+
     /**
-     * Create a Swarm with default values. The seed is set to 1
-     * @param numberOfParticles : Number of particles in this swarm (should be greater than 0). 
-     * If unsure about this parameter, try Swarm.DEFAULT_NUMBER_OF_PARTICLES or greater
-     * @param sampleParticle : A particle that is a sample to build all other particles
+     * Create a Swarm with default values, without setting the seed
+     *
+     * @param numberOfParticles : Number of particles in this swarm (should be
+     * greater than 0). If unsure about this parameter, try
+     * Swarm.DEFAULT_NUMBER_OF_PARTICLES or greater
+     * @param sampleParticle : A particle that is a sample to build all other
+     * particles
      * @param fitnessFunction : Fitness function used to evaluate each particle
      */
     public Swarm(int numberOfParticles, Particle sampleParticle, FitnessFunction fitnessFunction) {
-        this(numberOfParticles, sampleParticle, fitnessFunction, 1);
+        this(numberOfParticles, sampleParticle, fitnessFunction, null);
     }
-    
 
     //-------------------------------------------------------------------------
     // Methods
     //-------------------------------------------------------------------------
     /**
-     * Evaluate fitness function for every particle 
-     * Warning: particles[] must be initialized and fitnessFunction must be set
+     * Evaluate fitness function for every particle Warning: particles[] must be
+     * initialized and fitnessFunction must be set
      */
     @Override
     public void evaluate() {
@@ -192,10 +240,8 @@ public class Swarm implements Iterable<Particle>, Population {
     }
 
     /**
-     * Make an iteration: 
-     * 	- evaluates the swarm 
-     * 	- updates positions and velocities
-     * 	- applies positions and velocities constraints 
+     * Make an iteration: - evaluates the swarm - updates positions and
+     * velocities - applies positions and velocities constraints
      */
     public void evolve() {
         if (particles == null)
@@ -256,10 +302,10 @@ public class Swarm implements Iterable<Particle>, Population {
     }
 
     /**
-     * Return the best position in the neighborhood
-     * Note: If neighborhood is not defined (i.e. neighborhood is null) then 'particle' is returned 
-     * so that it doesn't influence in particle update.
-     * 
+     * Return the best position in the neighborhood Note: If neighborhood is not
+     * defined (i.e. neighborhood is null) then 'particle' is returned so that
+     * it doesn't influence in particle update.
+     *
      * @param particle
      * @return the best particle
      */
@@ -310,8 +356,8 @@ public class Swarm implements Iterable<Particle>, Population {
     }
 
     /**
-     * Initialize every particle
-     * Warning: maxPosition[], minPosition[], maxVelocity[], minVelocity[] must be initialized and setted
+     * Initialize every particle Warning: maxPosition[], minPosition[],
+     * maxVelocity[], minVelocity[] must be initialized and setted
      */
     public void init() {
         if (initializer == null)
@@ -385,7 +431,9 @@ public class Swarm implements Iterable<Particle>, Population {
     }
 
     /**
-     * Sets every maxVelocity[] and minVelocity[] to 'maxVelocity' and '-maxVelocity' respectively
+     * Sets every maxVelocity[] and minVelocity[] to 'maxVelocity' and
+     * '-maxVelocity' respectively
+     *
      * @param maxVelocity
      */
     public void setMaxMinVelocity(double maxVelocity) {
@@ -402,6 +450,7 @@ public class Swarm implements Iterable<Particle>, Population {
 
     /**
      * Sets every maxPosition[] to 'maxPosition'
+     *
      * @param maxPosition
      */
     public void setMaxPosition(double maxPosition) {
@@ -423,6 +472,7 @@ public class Swarm implements Iterable<Particle>, Population {
 
     /**
      * Sets every minPosition[] to 'minPosition'
+     *
      * @param minPosition
      */
     public void setMinPosition(double minPosition) {
@@ -477,7 +527,8 @@ public class Swarm implements Iterable<Particle>, Population {
     }
 
     /**
-     * Show a swarm in a graph 
+     * Show a swarm in a graph
+     *
      * @param graphics : Grapics object
      * @param foreground : foreground color
      * @param width : graphic's width
@@ -516,12 +567,16 @@ public class Swarm implements Iterable<Particle>, Population {
         }
     }
 
-    /** Swarm size (number of particles) */
+    /**
+     * Swarm size (number of particles)
+     */
     public int size() {
         return particles.length;
     }
 
-    /** Printable string */
+    /**
+     * Printable string
+     */
     @Override
     public String toString() {
         String str = "";
@@ -551,7 +606,8 @@ public class Swarm implements Iterable<Particle>, Population {
     }
 
     /**
-     * Return a string with some (very basic) statistics 
+     * Return a string with some (very basic) statistics
+     *
      * @return A string
      */
     public String toStringStats() {
@@ -566,8 +622,9 @@ public class Swarm implements Iterable<Particle>, Population {
     }
 
     /**
-     * Update every particle's position and velocity, also apply position and velocity constraints (if any)
-     * Warning: Particles must be already evaluated
+     * Update every particle's position and velocity, also apply position and
+     * velocity constraints (if any) Warning: Particles must be already
+     * evaluated
      */
     public void update() {
         // Initialize a particle update iteration
@@ -593,7 +650,7 @@ public class Swarm implements Iterable<Particle>, Population {
     public void setConstraintHandler(ConstraintsHandler constraintHandler) {
         this.constraintHandler = constraintHandler;
         if (constraintHandler instanceof RandomizedConstraintsHandler)
-            ((RandomizedConstraintsHandler)this.constraintHandler).setRandomGenerator(random);
+            ((RandomizedConstraintsHandler) this.constraintHandler).setRandomGenerator(random);
     }
 
     public GenericInitialization getInitializer() {
@@ -614,5 +671,5 @@ public class Swarm implements Iterable<Particle>, Population {
     public Random getRandomGenerator() {
         return random;
     }
-    
+
 }
